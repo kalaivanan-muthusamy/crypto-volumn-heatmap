@@ -48,3 +48,9 @@ export function formatNumber(num, decimals = 1) {
   const formattedNumber = scaledNumber.toFixed(decimals); // Round to specified decimals
   return `${formattedNumber}${units[magnitude] || ''}`;
 }
+
+export function isWeekend(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDay(); // 0 = Sunday, 6 = Saturday
+  return day === 0 || day === 6;
+}

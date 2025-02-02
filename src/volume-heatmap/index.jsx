@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveHeatMap } from '@nivo/heatmap';
 import { Card, Flex, Select } from 'antd';
-import { fetchVolumeData, formatNumber } from './util';
+import { fetchVolumeData, formatNumber, isWeekend } from './util';
 import Title from 'antd/es/typography/Title';
 
-const assets = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'TRXUSDT'];
+const assets = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT', 'BNBUSDT', 'DOGEUSDT', 'ADAUSDT', 'LINKUSDT', 'AVAXUSDT', 'SUIUSDT', 'LTCUSDT', 'TRXUSDT'];
 
 const HeatMapChart = ({ defaultSymbol }) => {
   const [data, setData] = useState([]);
@@ -58,13 +58,38 @@ const HeatMapChart = ({ defaultSymbol }) => {
             }}
             axisLeft={{
               orient: 'left',
-              legend: 'Hour of Day',
+              legend: 'Day',
               legendPosition: 'middle',
               legendOffset: -86,
+              tickPadding: 5,
+              tickSize: 5,
+              renderTick: (record) => {
+                const { opacity, x, y, value } = record;
+                console.log({ record });
+                return (<g transform={`translate(${x}, ${y})`}>
+                  <line
+                    x1={-5} x2={0}
+                    y1={0} y2={0}
+                    stroke="black"
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={-10}
+                    y={0}
+                    textAnchor="end"
+                    alignmentBaseline="middle"
+                    fill={isWeekend(value) ? "red" : "black"}
+                    fontSize="10px"
+                    opacity={opacity}
+                  >
+                    {value}
+                  </text>
+                </g>)
+              },
             }}
             axisTop={{
               orient: 'top',
-              legend: 'Day',
+              legend: 'Hours of Day',
               legendPosition: 'middle',
               legendOffset: -40,
             }}
